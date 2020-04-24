@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Either, right, left, fold as eitherFold } from "fp-ts/lib/Either"
 import { Option, none, some, fold as optionFold } from "fp-ts/lib/Option"
 import { pipe } from "fp-ts/lib/pipeable"
+import styled from "styled-components"
 
 import { Loading } from "src/components/Loading"
 import { ErrorMessage } from "src/components/ErrorMessage"
@@ -18,6 +19,12 @@ export type StateData = {
   positive: number
 }
 
+const Main = styled.main`
+  width: 80vw;
+  max-width: 50rem;
+  margin: 0 auto;
+`
+
 const onLoading = () => <Loading />
 const onError = (err: string) => <ErrorMessage msg={err} />
 const onSuccess = (data: ReadonlyArray<StateData>) => <Table data={data} />
@@ -33,9 +40,9 @@ export function App() {
   }, [])
 
   return (
-    <main>
+    <Main>
       <h1>COVID-19 Tracker</h1>
       {pipe(appState, optionFold(onLoading, eitherFold(onError, onSuccess)))}
-    </main>
+    </Main>
   )
 }
